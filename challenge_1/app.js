@@ -18,24 +18,22 @@ function toggle(block, classNames) {
     if (checkWin(classNames)) {
       // update status of game and set gameover
       gameStatus(player, 'win');
-      console.log('true');
       gameOver = true;
       return;
     } else if (spaces === 0) { // if no more spaces -> tie
       // update status of game and set gameover
       gameStatus(player, 'tie');
-      console.log('tie');
       gameOver= true;
       return;
     }
     // change player
     player = nextPlayer(player);
-    // update game text for next player
+    // update html page text for next player
     gameStatus(player);
   }
 };
 
-// alternate players
+// alternate players after each turn
 function nextPlayer(str) {
   if (str === "X") {
     return "O";
@@ -43,7 +41,7 @@ function nextPlayer(str) {
   return "X";
 };
 
-// rules implementation
+// helper fcn to implement rules and check if a game is won
 function checkWin(classNames) {
   // convert to an array of classes
   var classes = classNames.split(' ').slice(1);
@@ -70,13 +68,14 @@ function checkWin(classNames) {
   return false;
 };
 
-// update text to interchange players/win/tie
+// update html text on page according to the status of the game
 function gameStatus(player, status) {
   if (status === 'win') {
-    console.log('winner');
     document.getElementById("status").innerHTML = `${player} Wins!`;
+    document.getElementById("reset-btn").innerHTML = "Play Again?";
   } else if (status === 'tie') {
     document.getElementById("status").innerHTML = 'Tied Game!';
+    document.getElementById("reset-btn").innerHTML = "Play Again?";
   } else {
     if (player === "X") {
       document.getElementById("status").innerHTML = "Player X's Turn!";
@@ -84,4 +83,9 @@ function gameStatus(player, status) {
       document.getElementById("status").innerHTML = "Player O's Turn!";
     }
   }
-}
+};
+
+// resets game when button is pressed
+function reset() {
+  location.reload();
+};
