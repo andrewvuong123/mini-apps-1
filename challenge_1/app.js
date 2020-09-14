@@ -1,29 +1,36 @@
 console.log('Connected');
 
-// global var for curr player and spaces left on board
+// global var for curr player, spaces left on board, game status
 var player = "X";
 var spaces = 9;
+var gameOver = false;
+
 // toggles block by id when clicked
 function toggle(block, classNames) {
   var space = document.getElementById(block).innerHTML;
-  // only toggle a value if the block has a blank space
-  if (space === "") {
+  // only toggle a value if the block has a blank space and game is not over
+  if (space === "" && !gameOver) {
     // place value on block
     document.getElementById(block).innerHTML = player;
     // decrement space left
     spaces -= 1;
+    // check game status
+    if (checkWin(classNames)) {
+      // update status of game and set gameover
+      gameStatus(player, 'win');
+      console.log('true');
+      gameOver = true;
+      return;
+    } else if (spaces === 0) { // if no more spaces -> tie
+      // update status of game and set gameover
+      gameStatus(player, 'tie');
+      console.log('tie');
+      gameOver= true;
+      return;
+    }
     // change player
     player = nextPlayer(player);
-    // check if game is over
-    if (checkWin(classNames)) {
-      // update status of game
-      console.log('true');
-    } else if (spaces === 0) { // if no more spaces -> tie
-      // update status of game
-      console.log('tie');
-    }
-    console.log('space left', spaces);
-    // update status of game
+    // update game text for next player
     gameStatus(player);
   }
 };
@@ -64,10 +71,17 @@ function checkWin(classNames) {
 };
 
 // update text to interchange players/win/tie
-function gameStatus(player) {
-  if (player === "X") {
-    document.getElementById("status").innerHTML = "Player X's Turn!";
-  } else if (player === "O") {
-    document.getElementById("status").innerHTML = "Player O's Turn!";
+function gameStatus(player, status) {
+  if (status === 'win') {
+    console.log('winner');
+    document.getElementById("status").innerHTML = `${player} Wins!`;
+  } else if (status === 'tie') {
+    document.getElementById("status").innerHTML = 'Tied Game!';
+  } else {
+    if (player === "X") {
+      document.getElementById("status").innerHTML = "Player X's Turn!";
+    } else if (player === "O") {
+      document.getElementById("status").innerHTML = "Player O's Turn!";
+    }
   }
 }
