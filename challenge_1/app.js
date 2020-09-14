@@ -123,6 +123,8 @@ function gameStatus(player, status) {
   if (status === 'win') {
     document.getElementById("status").innerHTML = `${player} Wins!`;
     document.getElementById("reset-btn").innerHTML = "Play Again?";
+    // increment score on html
+    scores(player);
   } else if (status === 'tie') {
     document.getElementById("status").innerHTML = 'Tied Game!';
     document.getElementById("reset-btn").innerHTML = "Play Again?";
@@ -134,6 +136,15 @@ function gameStatus(player, status) {
     }
   }
 };
+
+// update scores
+function scores(player) {
+  var score = document.getElementById(player);
+  console.log(score);
+  var number = score.innerHTML;
+  number++;
+  score.innerHTML = number;
+}
 
 // resets game when button is pressed
 function reset() {

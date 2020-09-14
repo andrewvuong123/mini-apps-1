@@ -6,6 +6,11 @@
   <body>
     <h1 id="status">Start Game!</h1>
     <button id="reset-btn" onclick="reset()">Reset Game</button>
+    <div class="scores">
+      <h2>Score</h2>
+      <b class="player1">Player One: </b><p id="X" class="player1">0</p> <br>
+      <b class="player2">Player Two: </b><p id="O" class="player2">0</p>
+    </div>
     <div class="board">
       <div class="col">
         <div id="0" class="block col-1 row-1 diag-1" onclick="clickHandler(this.id, this.className)"></div>
