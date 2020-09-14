@@ -1,72 +1,122 @@
 console.log('Connected');
 
-// global var for curr player, spaces left on board, game status
-var player = "X";
-var spaces = 9;
-var gameOver = false;
-
-// toggles block by id when clicked
-function toggle(block, classNames) {
-  var space = document.getElementById(block).innerHTML;
-  // only toggle a value if the block has a blank space and game is not over
-  if (space === "" && !gameOver) {
-    // place value on block
-    document.getElementById(block).innerHTML = player;
-    // decrement space left
-    spaces -= 1;
-    // check game status
-    if (checkWin(classNames)) {
-      // update status of game and set gameover
-      gameStatus(player, 'win');
-      gameOver = true;
-      return;
-    } else if (spaces === 0) { // if no more spaces -> tie
-      // update status of game and set gameover
-      gameStatus(player, 'tie');
-      gameOver= true;
-      return;
+// class Obj to hold a game state
+class Game {
+  // initialize with starting player
+  constructor(player) {
+    this.board = [[ '', '', ''], [ '', '', ''], [ '', '', '']];
+    this.gameOver = false;
+    this.player = player;
+    this.spaces = 9;
+    this.map = {
+      0: [0, 0],
+      1: [1, 0],
+      2: [2, 0],
+      3: [0, 1],
+      4: [1, 1],
+      5: [2, 1],
+      6: [0, 2],
+      7: [1, 2],
+      8: [2, 2]
     }
-    // change player
-    player = nextPlayer(player);
-    // update html page text for next player
-    gameStatus(player);
   }
-};
 
-// alternate players after each turn
-function nextPlayer(str) {
-  if (str === "X") {
-    return "O";
+  // toggle fcn to place block on board
+  toggle(block) {
+    // get block in matrix from div id
+    var space = this.map[block];
+    // only toggle if block is blank
+    if (this.board[space[0]][space[1]] === '') {
+      // place value on block
+      this.board[space[0]][space[1]] = this.player;
+      // decrement space left
+      this.spaces -= 1;
+    }
   }
-  return "X";
-};
 
-// helper fcn to implement rules and check if a game is won
-function checkWin(classNames) {
-  // convert to an array of classes
-  var classes = classNames.split(' ').slice(1);
-  for (let i = 0; i < classes.length; i++) {
-    // get blocks corresponding to the class
-    var blocks = document.getElementsByClassName(classes[i]);
-    // set var to keep track of x/o
-    var x_count = 0;
-    var o_count = 0;
-    // iterate each block and increment counts
-    for (let j = 0; j < blocks.length; j++) {
-      let value = blocks[j].innerHTML
-      if (value === 'X') {
-        x_count += 1;
-      } else if (value === 'O') {
-        o_count += 1;
+  // alternate players after each turn
+  nextPlayer(str) {
+    if (str === "X") {
+      this.player = "O";
+    } else {
+      this.player = "X";
+    }
+  };
+
+  // helper fcn to implement rules and check if a game is won
+  checkWin(classNames) {
+    // convert to an array of classes
+    var classes = classNames.split(' ').slice(1);
+    for (let i = 0; i < classes.length; i++) {
+      // get blocks corresponding to the class
+      var blocks = document.getElementsByClassName(classes[i]);
+      // set var to keep track of x/o
+      var x_count = 0;
+      var o_count = 0;
+      // iterate each div block and increment counts
+      for (let j = 0; j < blocks.length; j++) {
+        // get block id
+        let block = blocks[j].id;
+        let space = this.map[block];
+        let value = this.board[space[0]][space[1]];
+        if (value === 'X') {
+          x_count += 1;
+        } else if (value === 'O') {
+          o_count += 1;
+        }
+      }
+      // if count === 3 -> win
+      if (x_count === 3 || o_count === 3) {
+        return true;
       }
     }
-    // if count === 3 -> win
-    if (x_count === 3 || o_count === 3) {
-      return true;
-    }
-  }
-  return false;
+    return false;
+  };
 };
+
+// initialize new game;
+myGame = new Game('X');
+
+// when a block on board is clicked in html
+function clickHandler(block, classNames) {
+  // only run if game is still going
+  if (!myGame.gameOver) {
+    // toggle piece onto game board
+    myGame.toggle(block);
+    // update view on index.html
+    updateView();
+    // update game status
+    updateStatus(classNames);
+    myGame.nextPlayer(myGame.player);
+  }
+}
+
+// update view in index.html according to matrix
+function updateView() {
+  for (let i = 0; i < 9; i++) {
+    var block = myGame.map[i];
+    document.getElementById(i).innerHTML = myGame.board[block[0]][block[1]];
+  }
+}
+
+// update game status after a players turn
+function updateStatus(classNames) {
+  // check game status
+  if (myGame.checkWin(classNames)) {
+    // update status of game and set gameover
+    gameStatus(myGame.player, 'win');
+    myGame.gameOver = true;
+    return;
+  } else if (myGame.spaces === 0) {
+    // update status of game and set gameover
+    gameStatus(myGame.player, 'tie');
+    myGame.gameOver= true;
+    return;
+  } else {
+     // update html text
+    gameStatus(myGame.player)
+  }
+}
 
 // update html text on page according to the status of the game
 function gameStatus(player, status) {
@@ -77,9 +127,9 @@ function gameStatus(player, status) {
     document.getElementById("status").innerHTML = 'Tied Game!';
     document.getElementById("reset-btn").innerHTML = "Play Again?";
   } else {
-    if (player === "X") {
+    if (player === "O") {
       document.getElementById("status").innerHTML = "Player X's Turn!";
-    } else if (player === "O") {
+    } else if (player === "X") {
       document.getElementById("status").innerHTML = "Player O's Turn!";
     }
   }
@@ -87,5 +137,9 @@ function gameStatus(player, status) {
 
 // resets game when button is pressed
 function reset() {
-  location.reload();
+  // make a new game object
+  myGame = new Game('X');
+  // update the view
+  updateView();
+  document.getElementById("status").innerHTML = "Start Game!";
 };
