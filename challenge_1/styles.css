@@ -1,0 +1,17 @@
+.board {
+  display: flex;
+  justify-content: center;
+}
+
+.col {
+  display: inline-block;
+}
+
+.block{
+  border: 1px solid black;
+  width: 100px;
+  height: 100px;
+  font-size: 80px;
+  text-align: center;
+}
+
