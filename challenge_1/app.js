@@ -25,13 +25,10 @@ class Game {
   toggle(block) {
     // get block in matrix from div id
     var space = this.map[block];
-    // only toggle if block is blank
-    if (this.board[space[0]][space[1]] === '') {
-      // place value on block
-      this.board[space[0]][space[1]] = this.player;
-      // decrement space left
-      this.spaces -= 1;
-    }
+    // place value on block
+    this.board[space[0]][space[1]] = this.player;
+    // decrement space left
+    this.spaces -= 1;
   }
 
   // alternate players after each turn
@@ -79,8 +76,9 @@ myGame = new Game('X');
 
 // when a block on board is clicked in html
 function clickHandler(block, classNames) {
+  var space = myGame.map[block];
   // only run if game is still going
-  if (!myGame.gameOver) {
+  if (myGame.board[space[0]][space[1]] === '' && !myGame.gameOver) {
     // toggle piece onto game board
     myGame.toggle(block);
     // update view on index.html
@@ -153,4 +151,5 @@ function reset() {
   // update the view
   updateView();
   document.getElementById("status").innerHTML = "Start Game!";
+  document.getElementById("reset-btn").innerHTML = "Reset Game";
 };
