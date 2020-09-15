@@ -1,0 +1,15 @@
+{
+  "name": "csv-generator",
+  "version": "1.0.0",
+  "description": "HRSF Mini App 2",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm run test",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
