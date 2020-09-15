@@ -126,6 +126,7 @@ function gameStatus(player, status) {
   } else if (status === 'tie') {
     document.getElementById("status").innerHTML = 'Tied Game!';
     document.getElementById("reset-btn").innerHTML = "Play Again?";
+    scores('tied');
   } else {
     if (player === "O") {
       document.getElementById("status").innerHTML = "Player X's Turn!";
