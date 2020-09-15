@@ -1,9 +1,21 @@
+@font-face {
+  font-family: 'chalkFont';
+  src: url('font/TicTacToe.ttf');
+}
+
 body {
   background-color: black;
 }
 
 h1 {
   color: white;
+  font-family: 'chalkFont', sans-serif;
+}
+
+.title {
+  padding-top: 10px;
+  font-size: 60px;
+  margin-left: 15px;
 }
 
 .board {
@@ -17,11 +29,12 @@ h1 {
 }
 
 .block{
+  font-family: 'chalkFont', sans-serif;
   color: white;
   border: 8px solid white;
-  width: 120px;
-  height: 120px;
-  font-size: 90px;
+  width: 100px;
+  height: 100px;
+  font-size: 80px;
   text-align: center;
 }
 
@@ -47,16 +60,21 @@ h1 {
 }
 
 .scores {
+  font-family: 'chalkFont', sans-serif;
   text-align: center;
   color: white;
 }
 
 #reset-btn {
+  font-family: 'chalkFont', sans-serif;
+  font-size: 20px;
   color: #fff !important;
   text-transform: uppercase;
   background: #ed3330;
-  padding: 20px;
+  padding: 15px;
+  margin-left: 15px;
   border-radius: 5px;
   border: none;
   transition: all 0.4s ease 0s;
 }
+
