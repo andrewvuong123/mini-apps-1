@@ -5,11 +5,7 @@
   </head>
   <body>
     <button id="reset-btn" onclick="reset()">Reset Game</button>
-    <div class="scores">
-      <h1 id="status">Start Game!</h1>
-      <b class="player1">PLAYER 1 (X) </b><b class="tied">TIE </b><b class="player2">PLAYER 2 (O) </b> <br>
-      <p id="X" class="player1 score">0</p><p id="tied" class="score">0</p><p id="O" class="player2 score">0</p>
-    </div>
+    <h1 id="status">Start Game!</h1>
     <div class="board">
       <div class="col">
         <div id="0" class="block col-1 row-1 diag-1" onclick="clickHandler(this.id, this.className)"></div>
@@ -26,6 +22,10 @@
         <div id="7" class="block col-3 row-2" onclick="clickHandler(this.id, this.className)"></div>
         <div id="8" class="block col-3 row-3 diag-1" onclick="clickHandler(this.id, this.className)"></div>
       </div>
+    </div>
+    <div class="scores">
+      <b class="player1 text">PLAYER 1 (X) </b><b class="tied text">TIE </b><b class="player2 text">PLAYER 2 (O) </b> <br>
+      <p id="X" class="player1 score">0</p><p id="tied" class="score">0</p><p id="O" class="player2 score">0</p>
     </div>
     <script src="./app.js"></script>
   </body>
