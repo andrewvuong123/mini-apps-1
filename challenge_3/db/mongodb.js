@@ -1,26 +1,27 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+// checkout is db name
+db = mongoose.createConnection('mongodb://localhost:27017/checkout', {useNewUrlParser: true});
+
+db.on('error', console.error.bind(console, 'connection error:'));
 
 // define schema
-var CheckoutModelSchema = new Schema({
-  Name: String,
-  Email: String,
-  Password: String,
-  Address: {
-    Line_1: String,
-    Line_2: String,
-    City: String,
-    State: String,
-    Zipcode: Number
-  },
-  'Phone Number': Number,
-  'Credit Card': Number,
-  'Expiration Date': Number,
-  CVV: Number,
-  'Billing Zipcode': Number
+var CheckoutSchema = new mongoose.Schema({
+  name: String,
+  email: String,
+  password: String,
+  line_1: String,
+  line_2: String,
+  city: String,
+  state: String,
+  zipcode: Number
+  phone: Number,
+  credit: Number,
+  expiry: Number,
+  cvv: Number,
+  zip: Number
 
 });
 
-var CheckoutModel = mongoose.model('CheckoutModel', CheckoutModelSchema);
+var Checkout = db.model('Checkout', CheckoutSchema);
 
-module.exports = CheckoutModel;
+module.exports = Checkout;

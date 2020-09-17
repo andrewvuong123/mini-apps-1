@@ -22,9 +22,10 @@ class App extends React.Component {
     }
     // hold initial state
     this.initialState = this.state;
-    // bind submission to handlechange()
+    // bind functions to handle clicks
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleCheckout = this.handleCheckout.bind(this)
     // bind functions to handle next/prev steps
     this._next = this._next.bind(this)
     this._prev = this._prev.bind(this)
@@ -44,9 +45,84 @@ class App extends React.Component {
     this.setState(this.initialState)
   }
 
+  // go to first form and create a new record to db
+  handleCheckout(event) {
+    // send ajax request to create a new record
+    $.ajax({
+      url: '/api/create',
+      type: 'POST',
+      data: {
+        name: '',
+        email: '',
+        password: '',
+        line_1: '',
+        line_2: '',
+        city: '',
+        state: '',
+        zipcode: '',
+        phone: '',
+        credit: '',
+        expiry: '',
+        cvv: '',
+        zip: ''
+      },
+      success: function(data) {
+        console.log('New Record Created');
+      }
+    })
+    this.setState({
+      currentStep: 1
+    })
+  }
+
   // increment current page step
   _next() {
     let currentStep = this.state.currentStep;
+    // send ajax request to add data into db
+    if (currentStep === 1) {
+      $.ajax({
+        url: '/api/insert',
+        type: 'POST',
+        data: {
+          name: this.state.name,
+          email: this.state.email,
+          password: this.state.password
+        },
+        success: function(data) {
+          console.log('inserted Step 1', data);
+        }
+      });
+    } else if (currentStep === 2) {
+      $.ajax({
+        url: '/api/insert',
+        type: 'POST',
+        data: {
+          line_1: this.state.line_1,
+          line_2: this.state.line_2,
+          city: this.state.city,
+          state: this.state.state,
+          zipcode: this.state.zipcode,
+          phone: this.state.phone
+        },
+        success: function(data) {
+          console.log('inserted Step 2', data);
+        }
+      });
+    } else if (currentStep === 3) {
+      $.ajax({
+        url: '/api/insert',
+        type: 'POST',
+        data: {
+          credit: this.state.credit,
+          expiry: this.state.expiry,
+          cvv: this.state.cvv,
+          zip: this.state.zip
+        },
+        success: function(data) {
+          console.log('inserted Step 3', data);
+        }
+      });
+    }
     // only increment step if not on confirmation page
     currentStep = currentStep > 3? 4 : currentStep + 1
     this.setState({
@@ -93,7 +169,7 @@ class App extends React.Component {
       <div>
         <h1>A Checkout Form!</h1>
         <p>Step {this.state.currentStep}</p>
-        <HomePage currentStep={this.state.currentStep} next={this._next}/>
+        <HomePage currentStep={this.state.currentStep} next={this.handleCheckout}/>
 
         <div>
           <UserForm currentStep={this.state.currentStep} handleChange={this.handleChange} name={this.state.name} email={this.state.email} password={this.state.password}/>
