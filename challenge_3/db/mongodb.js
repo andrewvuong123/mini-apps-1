@@ -13,7 +13,7 @@ var CheckoutSchema = new mongoose.Schema({
   line_2: String,
   city: String,
   state: String,
-  zipcode: Number
+  zipcode: Number,
   phone: Number,
   credit: Number,
   expiry: Number,

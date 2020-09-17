@@ -78,7 +78,7 @@ class App extends React.Component {
   // increment current page step
   _next() {
     let currentStep = this.state.currentStep;
-    // send ajax request to add data into db
+    // send ajax request to update data into db
     if (currentStep === 1) {
       $.ajax({
         url: '/api/insert',
