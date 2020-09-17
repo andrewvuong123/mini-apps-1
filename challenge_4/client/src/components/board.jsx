@@ -8,8 +8,7 @@ class Board extends React.Component {
     this.state = {
       // intiialze a 6x7 empty board
       board: [['', '' , '' , '', '', '', ''], ['', '' , '' , '', '', '', ''], ['', '' , '' , '', '', '', ''], ['', '' , '' , '', '', '', ''], ['', '' , '' , '', '', '', ''], ['', '' , '' , '', '', '', '']],
-      player1: 'red',
-      player2: 'black',
+      player: 'R',
       gameOver: false
     };
     this.handleDrop = this.handleDrop.bind(this);
@@ -25,24 +24,28 @@ class Board extends React.Component {
 
   // create button to drop piece
   handleDrop(col) {
-    // map through rows from bottom-up and set value on next available spot in the col
+    // map through rows from bottom-up and set value on next available spot
     const update_board = this.state.board;
     for (let row = 5; row >= 0; row--) {
       var value = update_board[row][col];
       console.log('value', value);
       if (value === '') {
-        update_board[row][col] = 'O';
+        update_board[row][col] = this.state.player;
         break;
       }
     }
     this.setState({
-      board: update_board
+      board: update_board,
+      player: this.nextPlayer(this.state.player)
     })
   }
 
   // switch between players
   nextPlayer(player) {
-
+    if (player === 'R') {
+      return 'B';
+    }
+    return 'R';
   }
 
   render() {
