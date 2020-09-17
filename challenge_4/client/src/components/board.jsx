@@ -7,23 +7,56 @@ class Board extends React.Component {
     super(props);
     this.state = {
       // intiialze a 6x7 empty board
-      board: Array(6).fill(Array(7).fill('')),
+      board: [['', '' , '' , '', '', '', ''], ['', '' , '' , '', '', '', ''], ['', '' , '' , '', '', '', ''], ['', '' , '' , '', '', '', ''], ['', '' , '' , '', '', '', ''], ['', '' , '' , '', '', '', '']],
       player1: 'red',
       player2: 'black',
       gameOver: false
     };
+    this.handleDrop = this.handleDrop.bind(this);
   }
 
   // create square given row/col
   renderSquare(row, col) {
     return (
-      <Square x={row} y={col} />
+      // square component has x/y coordinates and the board
+      <Square x={row} y={col} value={this.state.board[row][col]}/>
     );
+  }
+
+  // create button to drop piece
+  handleDrop(col) {
+    // map through rows from bottom-up and set value on next available spot in the col
+    const update_board = this.state.board;
+    for (let row = 5; row >= 0; row--) {
+      var value = update_board[row][col];
+      console.log('value', value);
+      if (value === '') {
+        update_board[row][col] = 'O';
+        break;
+      }
+    }
+    this.setState({
+      board: update_board
+    })
+  }
+
+  // switch between players
+  nextPlayer(player) {
+
   }
 
   render() {
     return (
       <div className="board">
+        <div className="drop-btn">
+        <button className="btn" onClick={() => this.handleDrop(0)}>Drop</button>
+        <button className="btn" onClick={() => this.handleDrop(1)}>Drop</button>
+        <button className="btn" onClick={() => this.handleDrop(2)}>Drop</button>
+        <button className="btn" onClick={() => this.handleDrop(3)}>Drop</button>
+        <button className="btn" onClick={() => this.handleDrop(4)}>Drop</button>
+        <button className="btn" onClick={() => this.handleDrop(5)}>Drop</button>
+        <button className="btn" onClick={() => this.handleDrop(6)}>Drop</button>
+        </div>
         <div className="board-row">
           {this.renderSquare(0, 0)}
           {this.renderSquare(0, 1)}
@@ -32,7 +65,6 @@ class Board extends React.Component {
           {this.renderSquare(0, 4)}
           {this.renderSquare(0, 5)}
           {this.renderSquare(0, 6)}
-          {this.renderSquare(0, 7)}
         </div>
         <div className="board-row">
           {this.renderSquare(1, 0)}
@@ -42,7 +74,6 @@ class Board extends React.Component {
           {this.renderSquare(1, 4)}
           {this.renderSquare(1, 5)}
           {this.renderSquare(1, 6)}
-          {this.renderSquare(1, 7)}
         </div>
         <div className="board-row">
           {this.renderSquare(2, 0)}
@@ -52,7 +83,6 @@ class Board extends React.Component {
           {this.renderSquare(2, 4)}
           {this.renderSquare(2, 5)}
           {this.renderSquare(2, 6)}
-          {this.renderSquare(2, 7)}
         </div>
         <div className="board-row">
           {this.renderSquare(3, 0)}
@@ -62,7 +92,6 @@ class Board extends React.Component {
           {this.renderSquare(3, 4)}
           {this.renderSquare(3, 5)}
           {this.renderSquare(3, 6)}
-          {this.renderSquare(3, 7)}
         </div>
         <div className="board-row">
           {this.renderSquare(4, 0)}
@@ -72,7 +101,6 @@ class Board extends React.Component {
           {this.renderSquare(4, 4)}
           {this.renderSquare(4, 5)}
           {this.renderSquare(4, 6)}
-          {this.renderSquare(4, 7)}
         </div>
         <div className="board-row">
           {this.renderSquare(5, 0)}
@@ -82,17 +110,6 @@ class Board extends React.Component {
           {this.renderSquare(5, 4)}
           {this.renderSquare(5, 5)}
           {this.renderSquare(5, 6)}
-          {this.renderSquare(5, 7)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6, 0)}
-          {this.renderSquare(6, 1)}
-          {this.renderSquare(6, 2)}
-          {this.renderSquare(6, 3)}
-          {this.renderSquare(6, 4)}
-          {this.renderSquare(6, 5)}
-          {this.renderSquare(6, 6)}
-          {this.renderSquare(6, 7)}
         </div>
       </div>
     );

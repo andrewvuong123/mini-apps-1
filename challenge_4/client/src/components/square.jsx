@@ -3,9 +3,9 @@ import React from 'react';
 
 function Square(props) {
   return (
-    <button className="square">
-      Red
-    </button>
+    <div className={`square row-${props.x} col-${props.y}`}>
+      {props.value}
+    </div>
   );
 }
 
