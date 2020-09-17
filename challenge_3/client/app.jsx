@@ -144,7 +144,7 @@ class App extends React.Component {
     if (this.state.currentStep > 1) {
       return (
         <button className='btn' onClick={this._prev}>
-          Previous
+          Prev
         </button>
       )
     }
@@ -173,18 +173,18 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>A Checkout Form!</h1>
-        <p>Step {this.state.currentStep}</p>
-        <HomePage currentStep={this.state.currentStep} next={this.handleCheckout}/>
+        <h1>Checkout Your Item!</h1>
 
-        <div>
-          <UserForm currentStep={this.state.currentStep} handleChange={this.handleChange} name={this.state.name} email={this.state.email} password={this.state.password}/>
+        <div className="wrap-form">
+          <HomePage className="home-page" currentStep={this.state.currentStep} next={this.handleCheckout}/>
 
-          <AddressForm currentStep={this.state.currentStep} handleChange={this.handleChange} address={this.state.address} phone={this.state.phone}/>
+          <UserForm className="form" currentStep={this.state.currentStep} handleChange={this.handleChange} name={this.state.name} email={this.state.email} password={this.state.password}/>
 
-          <CreditForm currentStep={this.state.currentStep} handleChange={this.handleChange} credit={this.state.credit} expiry={this.state.expiry} cvv={this.state.cvv} zip={this.state.zip}/>
+          <AddressForm className="form" currentStep={this.state.currentStep} handleChange={this.handleChange} address={this.state.address} phone={this.state.phone}/>
 
-          <Confirmation currentStep={this.state.currentStep} handleSubmit={this.handleSubmit} data={this.state}/>
+          <CreditForm className="form" currentStep={this.state.currentStep} handleChange={this.handleChange} credit={this.state.credit} expiry={this.state.expiry} cvv={this.state.cvv} zip={this.state.zip}/>
+
+          <Confirmation className="confirm-page" currentStep={this.state.currentStep} handleSubmit={this.handleSubmit} data={this.state}/>
 
           {this.previousButton}
           {this.nextButton}
@@ -202,7 +202,7 @@ function HomePage(props) {
   }
   return (
     // homepage has checkout button that leads to first form
-    <button className="checkout-btn" onClick={props.next}>
+    <button className="btn home-btn" onClick={props.next}>
       Checkout!
     </button>
   )
@@ -217,17 +217,22 @@ class UserForm extends React.Component {
       return null
     }
     return (
-      <form>
-        <label> Name:
-          <input name="name" value={this.props.name} onChange={this.props.handleChange} />
-        </label> <br></br>
-        <label> Email:
-          <input name="email" value={this.props.email} onChange={this.props.handleChange} />
-        </label> <br></br>
-        <label> Password:
-          <input name="password" value={this.props.password} onChange={this.props.handleChange} />
-        </label>
-      </form>
+      <div>
+        <form>
+          <span className="form-title">
+            User Information
+          </span> <br></br>
+          <label> Name:
+            <input className="input" name="name" value={this.props.name} onChange={this.props.handleChange} />
+          </label> <br></br>
+          <label> Email:
+            <input className="input" name="email" value={this.props.email} onChange={this.props.handleChange} />
+          </label> <br></br>
+          <label> Password:
+            <input className="input" name="password" value={this.props.password} onChange={this.props.handleChange} />
+          </label>
+        </form>
+      </div>
     )
   }
 }
@@ -240,26 +245,31 @@ class AddressForm extends React.Component {
       return null
     }
     return (
-      <form>
-        <label> Line 1:
-          <input name="line_1" value={this.props.line_1} onChange={this.props.handleChange} />
-        </label> <br></br>
-        <label> Line 2:
-          <input name="line_2" value={this.props.line_2} onChange={this.props.handleChange} />
-        </label> <br></br>
-        <label> City:
-          <input name="city" value={this.props.city} onChange={this.props.handleChange} />
-        </label> <br></br>
-        <label> State:
-          <input name="state" value={this.props.state} onChange={this.props.handleChange} />
-        </label> <br></br>
-        <label> Zipcode:
-          <input name="zipcode" value={this.props.zipcode} onChange={this.props.handleChange} />
-        </label> <br></br>
-        <label> Phone Number:
-          <input name="phone" value={this.props.phone} onChange={this.props.handleChange} />
-        </label>
-      </form>
+      <div>
+        <form>
+          <span className="form-title">
+            Address Information
+          </span> <br></br>
+          <label> Line 1:
+            <input className="input" name="line_1" value={this.props.line_1} onChange={this.props.handleChange} />
+          </label> <br></br>
+          <label> Line 2:
+            <input className="input" name="line_2" value={this.props.line_2} onChange={this.props.handleChange} />
+          </label> <br></br>
+          <label> City:
+            <input className="input" name="city" value={this.props.city} onChange={this.props.handleChange} />
+          </label> <br></br>
+          <label> State:
+            <input className="input" name="state" value={this.props.state} onChange={this.props.handleChange} />
+          </label> <br></br>
+          <label> Zipcode:
+            <input className="input" name="zipcode" value={this.props.zipcode} onChange={this.props.handleChange} />
+          </label> <br></br>
+          <label> Phone Number:
+            <input className="input" name="phone" value={this.props.phone} onChange={this.props.handleChange} />
+          </label>
+        </form>
+      </div>
     )
   }
 }
@@ -272,20 +282,25 @@ class CreditForm extends React.Component {
       return null
     }
     return (
-      <form>
-        <label> Credit Card Number:
-          <input name="credit" value={this.props.credit} onChange={this.props.handleChange} />
-        </label> <br></br>
-        <label> Expiration Date:
-          <input name="expiry" value={this.props.expiry} onChange={this.props.handleChange} />
-        </label> <br></br>
-        <label> CVV:
-          <input name="cvv" value={this.props.cvv} onChange={this.props.handleChange} />
-        </label> <br></br>
-        <label> Billing Zipcode:
-          <input name="zip" value={this.props.zip} onChange={this.props.handleChange} />
-        </label>
-      </form>
+      <div>
+        <form>
+          <span className="form-title">
+            Payment Information
+          </span> <br></br>
+          <label> Credit Card Number:
+            <input className="input" name="credit" value={this.props.credit} onChange={this.props.handleChange} />
+          </label> <br></br>
+          <label> Expiration Date:
+            <input className="input" name="expiry" value={this.props.expiry} onChange={this.props.handleChange} />
+          </label> <br></br>
+          <label> CVV:
+            <input className="input" name="cvv" value={this.props.cvv} onChange={this.props.handleChange} />
+          </label> <br></br>
+          <label> Billing Zipcode:
+            <input className="input" name="zip" value={this.props.zip} onChange={this.props.handleChange} />
+          </label>
+        </form>
+      </div>
     )
   }
 }

@@ -1,0 +1,39 @@
+.wrap-form {
+  width: 800px;
+  background: lightblue;
+  margin: auto;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 100px 150px 100px 150px;
+}
+
+.form-title {
+  display: block;
+  font-size: 40px;
+  padding-bottom: 34px;
+}
+
+.input {
+  display: block;
+  width: 100%;
+  background: transparent;
+  font-family: SourceSansPro-Bold;
+  font-size: 16px;
+  color: #4b2354;
+  line-height: 1.2;
+}
+
+.btn {
+  display: flex;
+  margin: auto;
+  margin-top: 30px;
+  padding: 10px 50px;
+  height: 42px;
+  background-color: #bd59d4;
+  border: none;
+  border-radius: 21px;
+  font-size: 14px;
+  color: #fff;
+  text-transform: uppercase;
+}
+
