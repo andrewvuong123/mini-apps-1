@@ -1,8 +1,5 @@
 const mongoose = require('mongoose');
 // checkout is db name
-db = mongoose.createConnection('mongodb://localhost:27017/checkout', {useNewUrlParser: true});
-
-db.on('error', console.error.bind(console, 'connection error:'));
 
 // define schema
 var CheckoutSchema = new mongoose.Schema({
@@ -19,9 +16,8 @@ var CheckoutSchema = new mongoose.Schema({
   expiry: Number,
   cvv: Number,
   zip: Number
-
 });
 
-var Checkout = db.model('Checkout', CheckoutSchema);
+var Checkout = mongoose.model('Checkout', CheckoutSchema);
 
 module.exports = Checkout;

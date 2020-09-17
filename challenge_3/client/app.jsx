@@ -1,9 +1,10 @@
 // main component
-
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // id of obj to ref in mongodb
+      obj_id: '',
       // start at homepage
       currentStep: 0,
       name: '',
@@ -36,46 +37,40 @@ class App extends React.Component {
     const {name, value} = event.target;
     this.setState({
       [name]: value
-    })
+    });
   }
 
   // return to homepage
   handleSubmit(event) {
     // reset all values
-    this.setState(this.initialState)
+    this.setState(this.initialState);
+    this.setState({
+      currentStep: 0
+    });
   }
 
   // go to first form and create a new record to db
   handleCheckout(event) {
     // send ajax request to create a new record
+    var record = this.initialState;
+    delete record.obj_id;
+    delete record.currentStep;
     $.ajax({
       url: '/api/create',
       type: 'POST',
-      data: {
-        name: '',
-        email: '',
-        password: '',
-        line_1: '',
-        line_2: '',
-        city: '',
-        state: '',
-        zipcode: '',
-        phone: '',
-        credit: '',
-        expiry: '',
-        cvv: '',
-        zip: ''
-      },
-      success: function(data) {
-        console.log('New Record Created');
+      data: record,
+      success: (data) => {
+        console.log('New Record Created', data);
+        // update state with id, and current step
+        this.setState({
+          obj_id: data.id,
+          currentStep: 1
+        });
       }
-    })
-    this.setState({
-      currentStep: 1
     })
   }
 
-  // increment current page step
+  // increment to next form and send ajax request
   _next() {
     let currentStep = this.state.currentStep;
     // send ajax request to update data into db
@@ -84,11 +79,12 @@ class App extends React.Component {
         url: '/api/insert',
         type: 'POST',
         data: {
+          obj_id: this.state.obj_id,
           name: this.state.name,
           email: this.state.email,
           password: this.state.password
         },
-        success: function(data) {
+        success: (data) => {
           console.log('inserted Step 1', data);
         }
       });
@@ -97,6 +93,7 @@ class App extends React.Component {
         url: '/api/insert',
         type: 'POST',
         data: {
+          obj_id: this.state.obj_id,
           line_1: this.state.line_1,
           line_2: this.state.line_2,
           city: this.state.city,
@@ -113,6 +110,7 @@ class App extends React.Component {
         url: '/api/insert',
         type: 'POST',
         data: {
+          obj_id: this.state.obj_id,
           credit: this.state.credit,
           expiry: this.state.expiry,
           cvv: this.state.cvv,
@@ -164,6 +162,14 @@ class App extends React.Component {
     return null;
   }
 
+  get submitButton() {
+    if (this.state.currentStep === 4) {
+      return (
+        <button className='btn' onClick={this.handleSubmit}>Purchase!</button>
+      )
+    }
+  }
+
   render() {
     return (
       <div>
@@ -182,6 +188,7 @@ class App extends React.Component {
 
           {this.previousButton}
           {this.nextButton}
+          {this.submitButton}
         </div>
       </div>
     )
@@ -308,9 +315,6 @@ function Confirmation(props) {
         <p>CVV: {props.data.cvv}</p>
         <p>Billing Zipcode: {props.data.zip}</p>
       </p>
-      <button className="purchase-btn" onClick={props.handleSubmit}>
-        Purchase!
-      </button>
     </div>
   )
 }
