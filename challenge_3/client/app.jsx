@@ -220,10 +220,10 @@ class UserForm extends React.Component {
       <form>
         <label> Name:
           <input name="name" value={this.props.name} onChange={this.props.handleChange} />
-        </label>
+        </label> <br></br>
         <label> Email:
           <input name="email" value={this.props.email} onChange={this.props.handleChange} />
-        </label>
+        </label> <br></br>
         <label> Password:
           <input name="password" value={this.props.password} onChange={this.props.handleChange} />
         </label>
@@ -243,19 +243,19 @@ class AddressForm extends React.Component {
       <form>
         <label> Line 1:
           <input name="line_1" value={this.props.line_1} onChange={this.props.handleChange} />
-        </label>
+        </label> <br></br>
         <label> Line 2:
           <input name="line_2" value={this.props.line_2} onChange={this.props.handleChange} />
-        </label>
+        </label> <br></br>
         <label> City:
           <input name="city" value={this.props.city} onChange={this.props.handleChange} />
-        </label>
+        </label> <br></br>
         <label> State:
           <input name="state" value={this.props.state} onChange={this.props.handleChange} />
-        </label>
+        </label> <br></br>
         <label> Zipcode:
           <input name="zipcode" value={this.props.zipcode} onChange={this.props.handleChange} />
-        </label>
+        </label> <br></br>
         <label> Phone Number:
           <input name="phone" value={this.props.phone} onChange={this.props.handleChange} />
         </label>
@@ -275,13 +275,13 @@ class CreditForm extends React.Component {
       <form>
         <label> Credit Card Number:
           <input name="credit" value={this.props.credit} onChange={this.props.handleChange} />
-        </label>
+        </label> <br></br>
         <label> Expiration Date:
           <input name="expiry" value={this.props.expiry} onChange={this.props.handleChange} />
-        </label>
+        </label> <br></br>
         <label> CVV:
           <input name="cvv" value={this.props.cvv} onChange={this.props.handleChange} />
-        </label>
+        </label> <br></br>
         <label> Billing Zipcode:
           <input name="zip" value={this.props.zip} onChange={this.props.handleChange} />
         </label>
