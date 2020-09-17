@@ -9,7 +9,8 @@ class Board extends React.Component {
       // intiialze a 6x7 empty board
       board: [['', '' , '' , '', '', '', ''], ['', '' , '' , '', '', '', ''], ['', '' , '' , '', '', '', ''], ['', '' , '' , '', '', '', ''], ['', '' , '' , '', '', '', ''], ['', '' , '' , '', '', '', '']],
       player: 'R',
-      gameOver: false
+      gameOver: false,
+      spaces: 42
     };
     this.handleDrop = this.handleDrop.bind(this);
   }
@@ -36,7 +37,8 @@ class Board extends React.Component {
     }
     this.setState({
       board: update_board,
-      player: this.nextPlayer(this.state.player)
+      player: this.nextPlayer(this.state.player),
+      spaces: this.state.spaces - 1
     })
   }
 
@@ -46,6 +48,13 @@ class Board extends React.Component {
       return 'B';
     }
     return 'R';
+  }
+
+  // check for wins
+  handleWin() {
+    // when a piece is dropped at row/col, need to check up, down, right, left, diag 3s and see if any have same player
+    // if no spaces left, return tied
+
   }
 
   render() {
