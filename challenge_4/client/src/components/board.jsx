@@ -67,10 +67,9 @@ class Board extends React.Component {
       });
       return;
     }
-    // when a piece is dropped at row/col, need to check horizontal, vertical, diag 3s and see if any have same player
-    // || checkDiag(row, col)
     // if win, update state and text
-    if (this.checkRows(row, col) || this.checkCols(row, col)) {
+    if (this.checkRows(row, col) || this.checkCols(row, col) || this.checkDiag(row, col)) {
+      console.log('here')
       this.gameStatus('WINNER');
       this.setState({
         gameOver: true
@@ -99,7 +98,6 @@ class Board extends React.Component {
       }
     }
     // check each left/right space to see if theres a win
-    console.log(spaces, row);
     for (let i = 0; i < spaces.length; i++) {
       if (this.state.board[row][spaces[i]] === player) {
         count += 1;
@@ -140,9 +138,31 @@ class Board extends React.Component {
     return false;
   }
 
-  // checkDiag(row, col) {
-
-  // }
+  checkDiag(row, col) {
+    var result = false;
+    var board = this.state.board;
+    if (board[row][col] != '') {
+      // top right diagonal
+      if (row - 3 > -1 && col + 3 < 7) {
+        // check manually lol
+        result = board[row][col] == board[row - 1][col + 1] && board[row][col] == board[row - 2][col + 2] && board[row][col] == board[row - 3][col + 3];
+      }
+      // bottom right
+      if (row + 3 < 6 && col + 3 < 7) {
+        result = board[row][col] == board[row + 1][col + 1] && board[row][col] == board[row + 2][col + 2] && board[row][col] == board[row + 3][col + 3];
+      }
+      // bottom left
+      if (row + 3 < 6 && col - 3 > -1) {
+        result = board[row][col] == board[row + 1][col - 1] && board[row][col] == board[row + 2][col - 2] && board[row][col] == board[row + 3][col - 3];
+      }
+      // top left
+      if (row - 3 > -1 && col - 3 > -1) {
+        result = board[row][col] == board[row - 1][col - 1] && board[row][col] == board[row - 2][col - 2] && board[row][col] == board[row - 3][col - 3];
+      }
+    }
+    console.log(result);
+    return result;
+  }
 
   // render ingame text on html
   gameStatus(status) {
@@ -151,7 +171,6 @@ class Board extends React.Component {
     } else {
       if (this.state.player === 'R') {
         document.getElementById('gamestatus').innerHTML = "Black's Turn!";
-        console.log('heres')
       } else {
         document.getElementById('gamestatus').innerHTML = "Red's Turn!";
       }
