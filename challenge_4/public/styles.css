@@ -1,6 +1,11 @@
+.board {
+  margin-top: 1%;
+  margin-left: 30%;
+}
+
 .square {
   display: inline-block;
-  border: 3px solid gold;
+  border: 2px solid gold;
   width: 70px;
   height: 70px;
   font-size: 80px;
@@ -12,6 +17,35 @@
 }
 
 .btn {
-  margin: 0 1px 8px 0;
-  padding: 0 21px 0 21px;
+  color: white;
+  margin: 0px 5px 13px 0;
+  padding: 0px 20px 0 18px;
+  border-radius: 50px;
+  height: 68px;
+  width: 68px;
+  background-color: #2E76CF;
+  border: none;
+}
+
+.btn:hover {
+  color: white;
+  background-color:#173b67;
+}
+
+.red-dot {
+  height: 50px;
+  width: 50px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.black-dot {
+  height: 50px;
+  width: 50px;
+  background-color: black;
+  border-radius: 50%;
+  display: inline-block;
+  margin-bottom: 10px;
 }

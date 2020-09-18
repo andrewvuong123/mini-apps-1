@@ -1,6 +1,7 @@
 // main component
 import React from 'react';
 import Square from './square.jsx';
+import {$,jQuery} from 'jquery';
 
 class Board extends React.Component {
   constructor(props) {
@@ -19,27 +20,29 @@ class Board extends React.Component {
   renderSquare(row, col) {
     return (
       // square component has x/y coordinates and the board
-      <Square x={row} y={col} value={this.state.board[row][col]}/>
+      <Square x={row} y={col} value={this.state.board[row][col]} player={this.state.player}/>
     );
   }
 
   // create button to drop piece
   handleDrop(col) {
     // map through rows from bottom-up and set value on next available spot
-    const update_board = this.state.board;
-    for (let row = 5; row >= 0; row--) {
-      var value = update_board[row][col];
-      console.log('value', value);
-      if (value === '') {
-        update_board[row][col] = this.state.player;
-        break;
+    if (!this.state.gameOver) {
+      const update_board = this.state.board;
+      var spaces_left = this.state.spaces;
+      for (let row = 5; row >= 0; row--) {
+        var value = update_board[row][col];
+        if (value === '') {
+          update_board[row][col] = this.state.player;
+          spaces_left -= 1;
+          // initialize a var x for the row of the placed piece to pass into handleWin
+          var x = row;
+          break;
+        }
       }
+      // check game status
+      this.handleWin(spaces_left, x, col, update_board);
     }
-    this.setState({
-      board: update_board,
-      player: this.nextPlayer(this.state.player),
-      spaces: this.state.spaces - 1
-    })
   }
 
   // switch between players
@@ -51,15 +54,115 @@ class Board extends React.Component {
   }
 
   // check for wins
-  handleWin() {
-    // when a piece is dropped at row/col, need to check up, down, right, left, diag 3s and see if any have same player
-    // if no spaces left, return tied
-
+  handleWin(space_left, row, col, update_board) {
+    // if invalid row, return
+    if (row === undefined) {
+      return;
+    }
+    // if no spaces left, return tied and update state
+    if (space_left === 0) {
+      this.gameStatus('TIED');
+      this.setState({
+        gameOver: true
+      });
+      return;
+    }
+    // when a piece is dropped at row/col, need to check horizontal, vertical, diag 3s and see if any have same player
+    // || checkDiag(row, col)
+    // if win, update state and text
+    if (this.checkRows(row, col) || this.checkCols(row, col)) {
+      this.gameStatus('WINNER');
+      this.setState({
+        gameOver: true
+      });
+      return;
+    }
+    // keep playing if not over
+    this.gameStatus('continue');
+    this.setState({
+      board: update_board,
+      player: this.nextPlayer(this.state.player),
+      spaces: space_left
+    });
+    return;
   }
+
+  checkRows(row, col) {
+    // counter var for each player
+    var count = 0;
+    var player = this.state.player;
+    // create arr of available spaces to check horizontally
+    var spaces = [];
+    for (let i = -3; i <= 3; i++) {
+      if (col + i >= 0 && col + i < 7) {
+        spaces.push(col + i);
+      }
+    }
+    // check each left/right space to see if theres a win
+    console.log(spaces, row);
+    for (let i = 0; i < spaces.length; i++) {
+      if (this.state.board[row][spaces[i]] === player) {
+        count += 1;
+        if (count === 4) {
+          return true;
+        }
+      } else {
+        // reset count if not consecutive 4
+        count = 0;
+      }
+    }
+    return false;
+  }
+
+  checkCols(row, col) {
+    // counter var for each player
+    var count = 0;
+    var player = this.state.player;
+    // create arr of available spaces to check horizontally
+    var spaces = [];
+    for (let i = -3; i <= 3; i++) {
+      if (row + i >= 0 && row + i < 6) {
+        spaces.push(row + i);
+      }
+    }
+    // check each left/right space to see if theres a win
+    for (let i = 0; i < spaces.length; i++) {
+      if (this.state.board[spaces[i]][col] === player) {
+        count += 1;
+        if (count === 4) {
+          return true;
+        }
+      } else {
+        // reset count if not consecutive 4
+        count = 0;
+      }
+    }
+    return false;
+  }
+
+  // checkDiag(row, col) {
+
+  // }
+
+  // render ingame text on html
+  gameStatus(status) {
+    if (status === 'TIED' || status === 'WINNER') {
+      document.getElementById('gamestatus').innerHTML = status;
+    } else {
+      if (this.state.player === 'R') {
+        document.getElementById('gamestatus').innerHTML = "Black's Turn!";
+        console.log('heres')
+      } else {
+        document.getElementById('gamestatus').innerHTML = "Red's Turn!";
+      }
+    }
+  }
+
 
   render() {
     return (
       <div className="board">
+        <h1 id="gamestatus">Start A Game!</h1>
         <div className="drop-btn">
         <button className="btn" onClick={() => this.handleDrop(0)}>Drop</button>
         <button className="btn" onClick={() => this.handleDrop(1)}>Drop</button>
